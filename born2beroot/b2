@@ -1,0 +1,71 @@
+#! /bin/bash
+#variable
+sudoer_d=/etc/sudoers
+user=ozahir
+
+#removing git
+apt remove git
+#setting sudo & usrmod
+echo "setting sudo & usermod"
+
+apt install sudo -y
+sudo usermod -aG sudo $user
+sudo touch /etc/sudoers.d/sudoers_config && sudo echo "$user	ALL=(ALL:ALL) ALL" >> $sudoer_d
+sudo echo "Defaults rootpw
+Defaults passwd_tries=3
+Defaults insults
+Defaults requiretty" >> $sudoer_d
+sudo mkdir -p /var/log/sudo 
+sudo touch /var/log/sudo/sudo.log
+sudo echo "Defaults logfile=/var/log/sudo/sudo.log
+Defaults log_input
+Defaults log_output" >> $sudoer_d
+sudo groupadd user42
+sudo adduser $user user42
+
+
+
+# setting plugable authentification module
+
+sudo apt install libpam-pwquality -y
+sudo sed -i 's/PASS_MAX_DAYS\t99999/PASS_MAX_DAYS\t30/g' /etc/login.defs
+sudo sed -i 's/PASS_MIN_DAYS\t0/PASS_MIN_DAYS\t2/g' /etc/login.defs
+sudo sed -i 's/PASS_WARN_AGE\t7/PASS_WARN_AGE\t7/g' /etc/login.defs
+sudo sed -i 's/# minlen = 8/minlen = 10/g' /etc/security/pwquality.conf
+sudo sed -i 's/# ucredit = 0/ucredit = -1/g' /etc/security/pwquality.conf
+sudo sed -i 's/# dcredit = 0/dcredit = -1/g' /etc/security/pwquality.conf
+sudo sed -i 's/# maxclassrepeat = 0/maxclassrepeat = 3/g' /etc/security/pwquality.conf
+sudo sed -i 's/# usercheck = 1/usercheck = 1/g' /etc/security/pwquality.conf
+sudo sed -i 's/# difok = 1/difok = 7/g' /etc/security/pwquality.conf
+
+sudo sed -i 's/# enforcing = 1/enforcing = 1/g' /etc/security/pwquality.conf
+sudo sed -i 's/# enforce_for_root/enforce_for_root/g' /etc/security/pwquality.conf
+
+
+
+
+#seting ssh
+
+sudo apt install openssh-server -y
+sudo sed -i 's/#Port 22/Port 4242/g' /etc/ssh/sshd_config && sudo systemctl restart ssh && sudo systemctl reload ssh
+sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/g' /etc/ssh/sshd_config && sudo systemctl restart ssh && sudo systemctl reload ssh
+
+
+#settig ufw
+echo "statring with ufw"
+apt install ufw -y
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 4242
+sudo ufw enable
+
+#monitor
+sudo apt install net-tools -y
+chown root:root monitoring.sh
+chmod +x monitoring.sh
+cp monitoring.sh /root
+# crontab config
+
+sudo echo "*/10 * * * *    root    sh /root/monitoring.sh" >> /etc/crontab
+sudo /etc/init.d/cron restart
+sudo /etc/init.d/cron reload
