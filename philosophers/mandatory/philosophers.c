@@ -6,7 +6,7 @@
 /*   By: ozahir <ozahir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 18:24:23 by ozahir            #+#    #+#             */
-/*   Updated: 2022/06/10 15:33:25 by ozahir           ###   ########.fr       */
+/*   Updated: 2022/06/17 16:44:57 by ozahir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*watcher_g(void	*phil)
 			if (philos[i].death < (what_time() - philos[i].stamp_u))
 			{
 				pthread_mutex_lock(&philos[0].mutexes->print);
-				printf("%ld %d died\n",
+				printf("%ld ms philo %d died\n",
 					(what_time() - philos[0].stamp), philos[i].rank + 1);
 				return (NULL);
 			}
@@ -72,7 +72,6 @@ void	*watcher_g(void	*phil)
 int	philosophers(t_philos *philo)
 {
 	int			i;
-	pthread_t	watcher;
 
 	i = 0;
 	if (pthread_mutex_init(&philo[0].mutexes->print, NULL) != 0)
@@ -82,11 +81,9 @@ int	philosophers(t_philos *philo)
 	{
 		if (pthread_create(&philo[i].thread, NULL, &routine, &philo[i]) != 0)
 			return (0);
+		pthread_detach(philo[i].thread);
 		i++;
 	}
-	if (pthread_create(&watcher, NULL, &watcher_g, philo) != 0)
-		return (0);
-	if (pthread_join(watcher, NULL) == 0)
-		return (0);
+	watcher_g(philo);
 	return (0);
 }

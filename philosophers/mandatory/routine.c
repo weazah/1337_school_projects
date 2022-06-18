@@ -6,7 +6,7 @@
 /*   By: ozahir <ozahir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 16:58:43 by ozahir            #+#    #+#             */
-/*   Updated: 2022/06/10 15:23:52 by ozahir           ###   ########.fr       */
+/*   Updated: 2022/06/17 16:47:19 by ozahir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,16 @@
 void	sleeping(t_philos *philo)
 {
 	pthread_mutex_lock(&get_mutex(philo->mutexes)->print);
-	printf("%lu %d sleeping\n", (what_time() - philo->stamp), philo->rank + 1);
+	printf("%lu ms %d sleeping\n",
+		(what_time() - philo->stamp), philo->rank + 1);
 	pthread_mutex_unlock(&get_mutex(philo->mutexes)->print);
-	usleep(philo->sleep * 1000);
+	ft_usleep(philo->sleep);
 }
 
 void	thinking(t_philos *philo)
 {
 	pthread_mutex_lock(&get_mutex(philo->mutexes)->print);
-	printf("%lu %d is thinking\n",
+	printf("%lu ms %d is thinking\n",
 		(what_time() - philo->stamp), philo->rank + 1);
 	pthread_mutex_unlock(&get_mutex(philo->mutexes)->print);
 }
@@ -32,17 +33,18 @@ void	eating(t_philos *philo)
 {
 	pthread_mutex_lock(&philo->mutexes->mutex);
 	pthread_mutex_lock(&get_mutex(philo->mutexes)->print);
-	printf("%lu %d has taken a left fork\n",
+	printf("%lu ms %d has taken a left fork\n",
 		(what_time() - philo->stamp), philo->rank + 1);
 	pthread_mutex_unlock(&get_mutex(philo->mutexes)->print);
 	pthread_mutex_lock(&philo->mutexes->next->mutex);
 	pthread_mutex_lock(&get_mutex(philo->mutexes)->print);
-	printf("%lu %d has taken a right fork\n",
+	printf("%lu ms %d has taken a right fork\n",
 		(what_time() - philo->stamp), philo->rank + 1);
-	printf("%lu %d is eating\n", (what_time() - philo->stamp), philo->rank + 1);
+	printf("%lu ms %d is eating\n",
+		(what_time() - philo->stamp), philo->rank + 1);
 	pthread_mutex_unlock(&get_mutex(philo->mutexes)->print);
 	philo->stamp_u = what_time();
-	usleep(philo->eat * 1000);
+	ft_usleep(philo->eat);
 	pthread_mutex_unlock(&philo->mutexes->mutex);
 	pthread_mutex_unlock(&philo->mutexes->next->mutex);
 }

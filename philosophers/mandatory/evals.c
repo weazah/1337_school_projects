@@ -6,7 +6,7 @@
 /*   By: ozahir <ozahir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 22:27:36 by ozahir            #+#    #+#             */
-/*   Updated: 2022/06/09 15:51:46 by ozahir           ###   ########.fr       */
+/*   Updated: 2022/06/17 16:57:44 by ozahir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	input_eval(char **av)
 	i = 0;
 	while (av[i])
 	{
+		if (ft_atoi(av[0]) > 200)
+			return (0);
 		if (is_num(av[i]) == 0)
 			return (0);
 		if (is_right(av[i]) == 0)

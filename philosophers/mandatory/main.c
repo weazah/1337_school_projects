@@ -6,7 +6,7 @@
 /*   By: ozahir <ozahir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 15:19:56 by ozahir            #+#    #+#             */
-/*   Updated: 2022/06/09 15:59:04 by ozahir           ###   ########.fr       */
+/*   Updated: 2022/06/17 16:42:47 by ozahir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	main(int ac, char **av)
 		if (init_data(philos, av + 1) == 0)
 			return (free(philos), 0);
 		philosophers(philos);
+		ft_usleep(philos[0].death);
 		free_data(philos);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: ozahir <ozahir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 15:07:50 by ozahir            #+#    #+#             */
-/*   Updated: 2022/06/07 21:10:05 by ozahir           ###   ########.fr       */
+/*   Updated: 2022/06/17 16:37:50 by ozahir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,13 @@ long	what_time(void)
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	ft_usleep(long ms)
+{
+	long	stamp;
+
+	stamp = what_time();
+	while (what_time() - stamp < ms)
+		usleep(50);
 }

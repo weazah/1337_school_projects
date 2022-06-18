@@ -6,7 +6,7 @@
 /*   By: ozahir <ozahir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 15:12:19 by ozahir            #+#    #+#             */
-/*   Updated: 2022/06/09 17:06:49 by ozahir           ###   ########.fr       */
+/*   Updated: 2022/06/17 16:37:59 by ozahir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ int			philosophers(t_philos *philo);
 int			ft_atoi(const char *str);
 int			ft_strlen(const char *s);
 long		what_time(void);
+void		ft_usleep(long ms);
 
 #endif
