@@ -6,7 +6,7 @@
 /*   By: ozahir <ozahir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 15:12:19 by ozahir            #+#    #+#             */
-/*   Updated: 2022/06/17 16:37:59 by ozahir           ###   ########.fr       */
+/*   Updated: 2022/06/21 14:33:13 by ozahir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_philos
 t_mutexes	*get_mutex(t_mutexes *mutexes);
 int			input_eval(char **av);
 void		free_data(t_philos *philos);
-int			mutexes_destroy(t_philos *philos, int rank);
+int			mutexes_destro(t_philos *philos, int rank);
 int			init_mutexes(t_philos *philos);
 int			init_data(t_philos *philos, char **args);
 void		sleeping(t_philos *philo);

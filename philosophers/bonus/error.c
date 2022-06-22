@@ -1,50 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_func.c                                        :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ozahir <ozahir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/05 17:42:04 by ozahir            #+#    #+#             */
-/*   Updated: 2022/06/21 14:32:49 by ozahir           ###   ########.fr       */
+/*   Created: 2022/06/22 20:35:18 by ozahir            #+#    #+#             */
+/*   Updated: 2022/06/22 20:37:12 by ozahir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philo.h"
 
-void	free_data(t_philos *philos)
+void	kill_zombies(int	*id, int i)
 {
-	int			i;
-	int			j;
-	t_mutexes	*temp;
-	t_mutexes	*tem;
+	int	j;
 
 	j = 0;
-	i = philos[0].n_ph;
-	temp = philos[0].mutexes;
-	mutexes_destro(philos, i);
-	pthread_mutex_destroy(&philos[0].mutexes->print);
+	if (i == 0)
+	{
+		printf("fork error");
+		free(id);
+	}
 	while (j < i)
 	{
-		tem = temp;
-		free(tem);
-		temp = temp->next;
-		i--;
+		kill(id[j], SIGINT);
+		j++;
 	}
-	free(philos);
+	free(id);
+	printf("fork error");
 }
 
-int	mutexes_destro(t_philos *philos, int rank)
+void	kill_the_children(int *id, int n)
 {
 	int	i;
 
 	i = 0;
-	if (!rank)
-		return (0);
-	while (i < rank)
+	while (i < n)
 	{
-		pthread_mutex_destroy(&philos[i].mutexes->mutex);
+		kill(id[i], SIGINT);
 		i++;
 	}
-	return (1);
+	free(id);
 }
